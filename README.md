@@ -1,12 +1,7 @@
 To deploy on a fresh installed VM, run
 
 ```bash
-curl https://raw.githubusercontent.com/invernizzi/personalize/master/install.sh |bash
-```
-
-Or
-```bash
-curl https://goo.gl/OyQbQR | bash
+wget https://goo.gl/OyQbQR -O install.sh; chmod +x install.sh; ./install.sh
 ```
 
 ## Note
