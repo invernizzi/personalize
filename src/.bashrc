@@ -42,6 +42,15 @@ POWERLINE_BASH_SELECT=1
 export POWERLINE_CONFIG_OVERRIDES='ext.shell.theme=default_leftonly'
 . ${POWERLINE_ROOT}/bindings/bash/powerline.sh
 
+powerline_path=$(python -c 'import pkgutil; print pkgutil.get_loader("powerline").filename' 2>/dev/null)
+if [[ "$powerline_path" != "" ]]; then
+  . ${POWERLINE_ROOT}/bindings/bash/powerline.sh
+else
+  # Normal PS1
+  echo 'No powerline found.'
+fi
+
+# Stderred
 STDERRED_PATH="${HOME}/.local/stderred/build/libstderred.so"
 
 if [ -f "$STDERRED_PATH" ]; then
@@ -52,6 +61,11 @@ fi
 
 
 #-[ Misc ]---------------------------------------------------------------------
+
+# Virtualenv
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Projects
+source ~/.local/bin/virtualenvwrapper.sh
 
 # Configure vertical mouse buttons
 # Warning: it breaks ssh

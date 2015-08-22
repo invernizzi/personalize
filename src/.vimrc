@@ -24,11 +24,11 @@ let g:plug_timeout=300
 "-[ Plugins ]-----------------------------------------------------------------------------
 
 " Looks {
-  Plug 'captbaritone/molokai'   " Molokai colorscheme
   Plug 'bling/vim-airline'      " Powerline look
   Plug 'bling/vim-bufferline'   " Show list of buffers in the command bar
   Plug 'kshenoy/vim-signature'  " Show bookmarks on the side
   Plug 'ryanoasis/vim-devicons' " Glyphs
+  Plug 'flazz/vim-colorschemes'
 " }
 
 " General {
@@ -40,6 +40,7 @@ let g:plug_timeout=300
   Plug 'christoomey/vim-tmux-navigator'                   " Seamless tmux/vim movements
   Plug 'bogado/file-line'                                 " Open at file:92
   Plug 'tpope/vim-dispatch'
+  Plug 'junegunn/vim-peekaboo'
   " Plug 'vim-scripts/LustyJuggler'
 " }
 
@@ -54,10 +55,12 @@ let g:plug_timeout=300
   Plug 'tpope/vim-surround'     " Change surrounding elements with one command
   Plug 'scrooloose/syntastic'   " Syntax
   Plug 'tpope/vim-fugitive'     " Git
+  Plug 'airblade/vim-gitgutter' " Shows +- git signs on the side, ,hs to stage hunk
   Plug 'tpope/vim-commentary'   " Comment pressing gc
   Plug 'godlygeek/tabular'      " Tabularize command
   Plug 'Chiel92/vim-autoformat' " Formatting code
   Plug 'jiangmiao/auto-pairs'   " Auto-close brackets
+  Plug 'chrisbra/csv.vim'
   if executable('ctags')
       Plug 'majutsushi/tagbar' " Helpful tag bar on the side
   endif
@@ -114,7 +117,7 @@ au FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 "-[ UI ]----------------------------------------------------------------------------------
 
-silent! colorscheme molokai                        " Colorscheme, if available
+silent! colorscheme mustang                        " Colorscheme, if available
 set t_Co=256                                       " Enable 256 colors
 syntax on                                          " Syntax highlighting
 set mouse=a                                        " Automatically enable mouse usage
@@ -162,11 +165,11 @@ set scrolloff=3                                    " Minimum lines to keep above
 set foldenable                                     " Auto fold code
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:.     " Highlight problematic whitespace
+hi Normal ctermbg=none                             " Transparent terminal
 
 " Airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
 
 " underline spelling errors
 hi clear SpellBad
@@ -177,7 +180,7 @@ set splitright
 set splitbelow
 
 " Highlight the 80th column, if a line crosses it
-highlight ColorColumn cterm=bold 
+highlight ColorColumn cterm=bold
 call matchadd('ColorColumn', '\%82v', 100)
 
 " Underline spelling errors

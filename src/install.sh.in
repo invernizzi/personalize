@@ -6,6 +6,7 @@ say "Installing Powerline."
 if [ ! -f .local/bin/powerline ]; then
     sudo apt-get install -y python-pip git python-dev fontconfig
     pip install --user powerline-status
+    pip3 install --user powerline-status
     git clone https://github.com/powerline/fonts /tmp/fonts
     if [ ! -d /tmp/fonts ]; then
         exit 1
@@ -23,6 +24,7 @@ fi
 say "Installing and configuring IPython."
 if ! which ipython; then
     sudo apt-get install -y ipython ipython3
+    pip install --user virtualenvwrapper
 else
     say 'Skipping, already installed.'
 fi
