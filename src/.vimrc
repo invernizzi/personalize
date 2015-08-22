@@ -47,6 +47,7 @@ let g:plug_timeout=300
   Plug 'panozzaj/vim-autocorrect' " Autofix mistypes (e.g., teh => the)
   Plug 'reedes/vim-wordy'         " Similar to chrisper
   Plug 'tpope/vim-markdown'
+  Plug 'lervag/vimtex'            " Latex. Ctrl-X Ctrl-O to autocomplete \cite
 " }
 
 " General Programming {

@@ -38,7 +38,7 @@ export POWERLINE_ROOT="${HOME}/.local/lib/python2.7/site-packages/powerline"
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
-export OVERRIDE='ext.shell.theme=default_leftonly'
+export POWERLINE_CONFIG_OVERRIDES='ext.shell.theme=default_leftonly'
 . ${POWERLINE_ROOT}/bindings/bash/powerline.sh
 
 STDERRED_PATH="${HOME}/.local/stderred/build/libstderred.so"
