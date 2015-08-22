@@ -1,6 +1,9 @@
 #-[ Environment ]-------------------------------------------------------------
 
 export PATH="${HOME}/.local/bin":${PATH}
+export EDITOR=vim
+export VISUAL=vim
+export BROWSER=google-chrome
 
 #------------------------------------------------------------------------------
 
@@ -8,15 +11,46 @@ export PATH="${HOME}/.local/bin":${PATH}
 #-[ Tweaks ]-------------------------------------------------------------------
 
 ## Bash Tweaks
-shopt -s cdspell     # Autmatically correct spelling mistakes in 'cd' args
-shopt -s cmdhist     # Save multiline commands as a single history entry
-shopt -s dotglob     # Make * expand to dotfiles too
-shopt -s histappend  # Append to history files, instead of rewriting it.
+shopt -s cdspell                 # Autmatically correct spelling mistakes in 'cd' args
+shopt -s dotglob                 # Make * expand to dotfiles too
+shopt -s checkwinsize            # Bash reloads window size upon resizing
+shopt -s hostcomplete            # Hostname completion after @
+shopt -s no_empty_cmd_completion
+
+## history
+shopt -s cmdhist                 # Save multiline commands as a single history entry
+shopt -s histappend              # Append to history files, instead of rewriting it.
+export HISTCONTROL=ignoreboth
+export HISTSIZE=5000
+export HISTIGNORE="&:ls:[bf]g:exit" # Don't save in history duplicates(&), and not interesting commands
 
 # Enable programmable completion
 if [ -f /etc/bash_completion  ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+set -o vi                           # Vi mode (instead of Emacs)
+
+## Less tweaks
+export LESS="-R"                    # Less interprets bash colours
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)" # Make less more friendly for non-text input files
+
+# LS COLORS
+eval "`dircolors -b`"
+alias ls='ls --color=auto'
+
+# MAN COLORS
+export LESS_TERMCAP_mb=$'\e[01;31m'
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+
+# GREP COLORS
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='1;32'
 
 #------------------------------------------------------------------------------
 
@@ -27,7 +61,15 @@ alias l="ls --ignore='*.pyc'"
 alias m='make'
 alias v='vim'
 alias vim-latex='vim.gnome --servername LATEX '
+alias o='xdg-open'
+alias rsync='rsync -P'
 
+if [ -x "`which trash-put 2>/dev/null`" ]; then
+	alias rm='trash-put'
+else
+	alias rm='rm -i '
+fi
+alias alert="notify-send -i gnome-terminal   --hint int:transient:1 'CLI' "  # Use as: job && alert "job finished" (|| alert "job failed!")
 #------------------------------------------------------------------------------
 
 
@@ -81,3 +123,43 @@ source ~/.local/bin/virtualenvwrapper.sh
 #     setxkbmap -layout us -option ctrl:nocaps
 # fi
 
+# xmodmap ~/.bash/Xmodmap 2>/dev/null
+
+#-[ Autocompletion ]-----------------------------------------------------------
+_tmuxinator() {
+    COMPREPLY=()
+    local word="${COMP_WORDS[COMP_CWORD]}"
+
+    if [ "$COMP_CWORD" -eq 1 ]; then
+        local commands="$(compgen -W "$(tmuxinator commands)" -- "$word")"
+        local projects="$(compgen -W "$(tmuxinator completions start)" -- "$word")"
+
+        COMPREPLY=( $commands $projects )
+    else
+        local words=("${COMP_WORDS[@]}")
+        unset words[0]
+        unset words[$COMP_CWORD]
+        local completions=$(tmuxinator completions "${words[@]}")
+        COMPREPLY=( $(compgen -W "$completions" -- "$word") )
+    fi
+}
+
+complete -F _tmuxinator tmuxinator mux
+
+_paver()
+{
+    local cur
+    COMPREPLY=()
+    # Variable to hold the current word
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    # Build a list of the available tasks from: `paver --help --quiet`
+    local cmds=$(paver -hq | awk '/^  ([a-zA-Z][a-zA-Z0-9_]+)/ {print $1}')
+
+    # Generate possible matches and store them in the
+    # array variable COMPREPLY
+    COMPREPLY=($(compgen -W "${cmds}" $cur))
+}
+
+# Assign the auto-completion function for our command.
+complete -F _paver paver
