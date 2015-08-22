@@ -26,6 +26,7 @@ fi
 alias l="ls --ignore='*.pyc'"
 alias m='make'
 alias v='vim'
+alias vim-latex='vim.gnome --servername LATEX '
 
 #------------------------------------------------------------------------------
 

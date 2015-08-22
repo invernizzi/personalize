@@ -50,6 +50,7 @@ if ! which nvim; then
 else
     say 'Skipping, already installed.'
 fi
+# qpdfview latexmk xdotool
 
 
 say "Installing and configuring Tmux."

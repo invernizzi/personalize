@@ -315,3 +315,9 @@ function! InitializeDirectories()
     endfor
 endfunction
 call InitializeDirectories()
+
+
+" Vim tex sync
+let g:vimtex_view_general_viewer = 'qpdfview'
+let g:vimtex_view_general_options = '--unique @pdf\#src:@tex:@line:@col'
+let g:vimtex_view_general_options_latexmk = '--unique'
