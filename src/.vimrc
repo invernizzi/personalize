@@ -162,6 +162,19 @@ set foldenable                                     " Auto fold code
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:.     " Highlight problematic whitespace
 
+" Airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" underline spelling errors
+hi clear SpellBad
+hi SpellBad cterm=underline,bold
+
+" Always splits to the right and below
+set splitright
+set splitbelow
+
 " Highlight the 80th column, if a line crosses it
 highlight ColorColumn cterm=bold 
 call matchadd('ColorColumn', '\%82v', 100)
@@ -231,10 +244,13 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,pe
 :nnoremap gF :vertical wincmd f<CR>
 
 " Wrapped lines goes down/up to next row, rather than next line in file.
-noremap j gj
-noremap k gk
-noremap <Up> gk
-noremap <Down> gj
+vnoremap j gj
+vnoremap k gk
+nnoremap <Down> gj
+nnoremap <Up> gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+
 
 
 
@@ -246,3 +262,12 @@ if has('clipboard')
   endif
 endif
 
+
+"-[ Modeline ]----------------------------------------------------------------------------
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
