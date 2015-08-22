@@ -1,0 +1,19 @@
+# Gnome Shell Mouse Button 8 to Overview
+"synapse"
+release + b:10
+
+
+# Zoom button
+"synapse"
+release + b:13
+
+
+# Back button: 8
+# "xdotool key CTRL+ALT+Down"
+"google-chrome"
+release + b:8
+
+# Forward button: 9
+# "xdotool key CTRL+ALT+Up"
+"terminator"
+release + b:9

@@ -1,0 +1,18 @@
+[user]
+    name = Luca Invernizzi
+    email = invernizzi.l@gmail.com
+[github]
+    user = invernizzi
+[color]
+    ui = auto
+    diff = auto
+[core]
+    excludesfile = /home/invernizzi/.gitignore-global
+[alias]
+    d = diff --color-words
+    acp = !git add -u && git commit -m "auto" && git push
+    s = status --ignore-submodules
+    c = commit
+    l = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[push]
+    default = simple

@@ -1,0 +1,75 @@
+say "Installing utils."
+sudo apt-get install -y htop python-pip python-dev git tree xinput
+
+
+say "Installing Powerline."
+if [ ! -f .local/bin/powerline ]; then
+    sudo apt-get install -y python-pip git python-dev fontconfig
+    pip install --user powerline-status
+    git clone https://github.com/powerline/fonts /tmp/fonts
+    if [ ! -d /tmp/fonts ]; then
+        exit 1
+    fi
+    pushd /tmp/fonts
+    ./install.sh
+    fc-cache -vf ~/.fonts/
+    popd
+    . ~/.bashrc
+else
+    say 'Skipping, already installed.'
+fi
+
+
+say "Installing and configuring IPython."
+if ! which ipython; then
+    sudo apt-get install -y ipython ipython3
+else
+    say 'Skipping, already installed.'
+fi
+
+
+say "Installing and configuring Vim."
+if [ ! -d "$HOME/.spf13-vim-3/" ]; then
+    pip install --user isort jedi
+    sudo apt-get -y install vim-nox
+    vim  '+PlugInstall' '+qa!'
+else
+    say 'Skipping, already installed.'
+fi
+
+say 'Installing and configuring NeoVim.'
+if ! which nvim; then
+    sudo apt-get install -y python-dev python-pip  python3-pip xclip python-dev build-essential cmake
+    sudo add-apt-repository -y ppa:neovim-ppa/unstable
+    sudo apt-get update
+    sudo apt-get install -y neovim
+    pop install --user neovim
+    sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+    sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+    sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+else
+    say 'Skipping, already installed.'
+fi
+
+
+say "Installing and configuring Tmux."
+if ! which tmux; then
+    sudo apt-get install -y python-software-properties software-properties-common
+    sudo add-apt-repository -y ppa:pi-rho/dev
+    sudo apt-get update
+    sudo at-get install -y tmux
+else
+    say 'Skipping, already installed.'
+fi
+
+say 'Colorizing StdErr in red.'
+INSTALL_PATH="~/.local/stderred"
+if [ ! -d "$INSTALL_PATH" ]; then
+    sudo apt-get install -y build-essential cmake
+    git clone git://github.com/sickill/stderred.git $INSTALL_PATH
+    pushd $INSTALL_PATH
+    make
+    popd
+else
+    say 'Skipping, already installed.'
+fi
