@@ -31,7 +31,7 @@ fi
 
 
 say "Installing and configuring Vim."
-if [ ! -d "$HOME/.spf13-vim-3/" ]; then
+if [ ! -d "$HOME/.vim/" ]; then
     pip install --user isort jedi
     sudo apt-get -y install vim-nox
     vim  '+PlugInstall' '+qa!'
