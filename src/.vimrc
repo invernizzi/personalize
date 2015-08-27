@@ -110,10 +110,23 @@ call plug#end()
 "-[ Auto commands ]-----------------------------------------------------------------------
 
 autocmd filetype text,latex,markdown call AutoCorrect()
-autocmd filetype text,latex,markdown set spell
 autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
 au FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
+
+"-[ Spelling ]----------------------------------------------------------------------------
+
+" Do not consider capitalized words, and 's words as spelling errors
+syn match myExCapitalWords +\<\w*[A-Z]\K*\>\|'s+ contains=@NoSpell
+
+" underline spelling errors
+hi clear SpellBad
+hi SpellBad cterm=underline,bold
+
+" Set custom spellfile
+set spellfile=~/.vim.spellfile.en.utf-8.add
+
+" autocmd filetype text,tex,latex,markdown set spell
 
 "-[ UI ]----------------------------------------------------------------------------------
 
@@ -171,10 +184,6 @@ hi Normal ctermbg=none                             " Transparent terminal
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-" underline spelling errors
-hi clear SpellBad
-hi SpellBad cterm=underline,bold
-
 " Always splits to the right and below
 set splitright
 set splitbelow
@@ -183,9 +192,6 @@ set splitbelow
 highlight ColorColumn cterm=bold
 call matchadd('ColorColumn', '\%82v', 100)
 
-" Underline spelling errors
-hi clear SpellBad
-hi SpellBad cterm=underline,bold
 
 " Markdown with fenced code blocks
 au BufNewFile,BufReadPost *.md set filetype=markdown
@@ -321,6 +327,8 @@ call InitializeDirectories()
 
 
 " Vim tex sync
-let g:vimtex_view_general_viewer = 'qpdfview'
-let g:vimtex_view_general_options = '--unique @pdf\#src:@tex:@line:@col'
-let g:vimtex_view_general_options_latexmk = '--unique'
+if executable('qpdfview')
+  let g:vimtex_view_general_viewer = 'qpdfview'
+  let g:vimtex_view_general_options = '--unique @pdf\#src:@tex:@line:@col'
+  let g:vimtex_view_general_options_latexmk = '--unique'
+endif
