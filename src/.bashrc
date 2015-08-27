@@ -1,6 +1,6 @@
 #-[ Environment ]-------------------------------------------------------------
 
-export PATH="${HOME}/.local/bin":${PATH}
+export PATH="${HOME}/.local/bin":"${HOME}/bin":${PATH}
 export EDITOR=vim
 export VISUAL=vim
 export BROWSER=google-chrome
@@ -82,6 +82,47 @@ powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
 export POWERLINE_CONFIG_OVERRIDES='ext.shell.theme=default_leftonly'
+POWERLINE_BASH_CONFIG='[
+  {
+    "function": "powerline.segments.common.time.fuzzy_time",
+    "priority": 10
+  },
+  {
+    "function": "powerline.segments.common.sys.cpu_load_percent",
+    "priority": 50
+  },
+  {
+    "function": "powerline.segments.common.net.hostname",
+    "priority": 100
+  },
+  {
+    "function": "powerline.segments.common.env.user",
+    "hide_user": "invernizzi",
+    "priority": 200
+  },
+  {
+    "function": "powerline.segments.common.vcs.branch",
+    "status_colors": true,
+    "priority": 30
+  },
+  {
+    "function": "powerline.segments.common.env.virtualenv",
+    "priority": 50
+  },
+  {
+    "function": "powerline.segments.shell.cwd",
+    "priority": 40
+  },
+  {
+    "function": "powerline.segments.shell.jobnum",
+    "priority": 20
+  },
+  {
+    "function": "powerline.segments.shell.last_status",
+    "priority": 10
+  }
+]'
+export POWERLINE_THEME_OVERRIDES="default_leftonly.segments.left=${POWERLINE_BASH_CONFIG//[[:space:]]/}"
 . ${POWERLINE_ROOT}/bindings/bash/powerline.sh
 
 powerline_path=$(python -c 'import pkgutil; print pkgutil.get_loader("powerline").filename' 2>/dev/null)
