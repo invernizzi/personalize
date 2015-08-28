@@ -45,6 +45,7 @@ setopt AUTO_CD
 # Red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS=true
 
+export EDITOR=vim
 
 # Aliases
 alias l="ls --ignore='*.pyc'"
@@ -53,3 +54,6 @@ alias v='vim'
 alias vim-latex='vim.gnome --servername LATEX '
 alias o='xdg-open'
 alias rsync='rsync -P'
+
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
