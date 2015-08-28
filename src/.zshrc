@@ -16,6 +16,7 @@ antigen bundle python
 antigen bundle virtualenv
 antigen bundle command-not-found
 antigen bundle zsh-users/zsh-syntax-highlighting # Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-history-substring-search # Search with up arrow
 antigen bundle djui/alias-tips                   # If you have an alias for it, dispplay it.
 antigen bundle tmuxinator
 antigen bundle vagrant
@@ -31,3 +32,8 @@ antigen theme bhilburn/powerlevel9k powerlevel9k
 
 # Apply everything!
 antigen apply
+
+
+# History
+SAVEHIST=10000
+HISTFILE=~/.zsh_history
