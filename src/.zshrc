@@ -9,11 +9,13 @@ fi
 source "$ANTIGEN_PATH"
 
 # Plugins
-# antigen use oh-my-zsh                            # Load the oh-my-zsh's library.
+# antigen use oh-my-zsh                          # Load the oh-my-zsh's library.
 antigen bundle git
 antigen bundle pip
 antigen bundle python
 antigen bundle virtualenv
+antigen bundle common-aliases
+antigen-bundle sjl/z-zsh                         # Z command
 antigen bundle command-not-found
 antigen bundle zsh-users/zsh-syntax-highlighting # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-history-substring-search # Search with up arrow
@@ -35,5 +37,10 @@ antigen apply
 
 
 # History
-SAVEHIST=10000
-HISTFILE=~/.zsh_history
+export HISTSIZE=1000000 SAVEHIST=1000000 HISTFILE=~/.zhistory
+
+# Zsh config
+# Auto cd
+setopt AUTO_CD
+# Red dots to be displayed while waiting for completion
+COMPLETION_WAITING_DOTS=true
