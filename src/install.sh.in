@@ -3,7 +3,7 @@ sudo apt-get install -y htop python-pip python-dev git tree xinput
 
 
 say "Installing Powerline."
-if [ ! -f .local/bin/powerline ]; then
+if [ ! -f "${HOME}.local/bin/powerline" ]; then
     sudo apt-get install -y python-pip git python-dev fontconfig
     pip install --user powerline-status
     pip3 install --user powerline-status
@@ -15,12 +15,14 @@ if [ ! -f .local/bin/powerline ]; then
     # pushd /tmp/fonts
     # ./install.sh
     # popd
-    sudo fc-cache -vf ~/.fonts/
     . ~/.bashrc
 else
     say 'Skipping, already installed.'
 fi
 
+say "Installing fonts."
+sudo apt-get install -y fontconfig
+sudo fc-cache -vf ~/.fonts/
 
 say "Installing and configuring IPython."
 if ! which ipython; then
@@ -30,15 +32,6 @@ else
     say 'Skipping, already installed.'
 fi
 
-
-say "Installing and configuring Vim."
-if [ ! -d "$HOME/.vim/" ]; then
-    pip install --user isort jedi
-    sudo apt-get -y install vim-nox
-    vim  '+PlugInstall' '+qa!'
-else
-    say 'Skipping, already installed.'
-fi
 
 say 'Installing and configuring NeoVim.'
 if ! which nvim; then
@@ -50,6 +43,8 @@ if ! which nvim; then
     sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
     sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
     sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+    pip install --user isort jedi
+    nvim  '+PlugInstall' '+qa!'
 else
     say 'Skipping, already installed.'
 fi
@@ -66,8 +61,16 @@ else
     say 'Skipping, already installed.'
 fi
 
+say "Installing and configuring Zsh."
+if ! which tmux; then
+    sudo apt-get install -y zsh
+    chsh -s /bin/zsh
+else
+    say 'Skipping, already installed.'
+fi
+
 say 'Colorizing StdErr in red.'
-INSTALL_PATH="~/.local/stderred"
+INSTALL_PATH="${HOME}/.local/stderred"
 if [ ! -d "$INSTALL_PATH" ]; then
     sudo apt-get install -y build-essential cmake
     git clone git://github.com/sickill/stderred.git $INSTALL_PATH
