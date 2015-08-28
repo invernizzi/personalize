@@ -44,3 +44,12 @@ export HISTSIZE=1000000 SAVEHIST=1000000 HISTFILE=~/.zhistory
 setopt AUTO_CD
 # Red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS=true
+
+
+# Aliases
+alias l="ls --ignore='*.pyc'"
+alias m='make'
+alias v='vim'
+alias vim-latex='vim.gnome --servername LATEX '
+alias o='xdg-open'
+alias rsync='rsync -P'
