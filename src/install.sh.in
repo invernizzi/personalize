@@ -7,14 +7,15 @@ if [ ! -f .local/bin/powerline ]; then
     sudo apt-get install -y python-pip git python-dev fontconfig
     pip install --user powerline-status
     pip3 install --user powerline-status
-    git clone https://github.com/powerline/fonts /tmp/fonts
-    if [ ! -d /tmp/fonts ]; then
-        exit 1
-    fi
-    pushd /tmp/fonts
-    ./install.sh
-    fc-cache -vf ~/.fonts/
-    popd
+    # Shipping with the fonts already in the payload
+    # git clone https://github.com/powerline/fonts /tmp/fonts
+    # if [ ! -d /tmp/fonts ]; then
+    #     exit 1
+    # fi
+    # pushd /tmp/fonts
+    # ./install.sh
+    # popd
+    sudo fc-cache -vf ~/.fonts/
     . ~/.bashrc
 else
     say 'Skipping, already installed.'
