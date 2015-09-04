@@ -109,10 +109,12 @@ call plug#end()
 
 "-[ Auto commands ]-----------------------------------------------------------------------
 
-autocmd filetype text,latex,markdown call AutoCorrect()
-autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
-au FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
-
+augroup filetypes
+    autocmd!
+    autocmd FileType text,latex,markdown call AutoCorrect()
+    autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
+    autocmd FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
 
 "-[ Spelling ]----------------------------------------------------------------------------
 
@@ -194,12 +196,17 @@ call matchadd('ColorColumn', '\%82v', 100)
 
 
 " Markdown with fenced code blocks
-au BufNewFile,BufReadPost *.md set filetype=markdown
+augroup markdown
+    autocmd!
+    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+augroup END
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
 " Set it to the first line when editing a git commit message
-au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-
+augroup git
+    autocmd!
+    autocmd FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+augroup END
 
 "-[ Functionality ]-----------------------------------------------------------------------
 
