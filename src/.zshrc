@@ -54,7 +54,14 @@ alias v='vim'
 alias vim-latex='vim.gnome --servername LATEX '
 alias o='xdg-open'
 alias rsync='rsync -P'
-alias rm='trash'
+if which trash 1>/dev/null; then
+  alias rm='trash'
+fi
 
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+# Vim mode
+bindkey -v

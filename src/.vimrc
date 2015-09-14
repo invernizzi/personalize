@@ -68,6 +68,7 @@ let g:plug_timeout=300
 
 " Snippets & AutoComplete {
   Plug 'davidhalter/jedi-vim', {'for': 'python'}
+  Plug 'ehamberg/vim-cute-python', {'for': 'python'}
   Plug 'fisadev/vim-isort', {'for': 'python'}  " sort python imports
   " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 " }
@@ -109,12 +110,10 @@ call plug#end()
 
 "-[ Auto commands ]-----------------------------------------------------------------------
 
-augroup filetypes
-    autocmd!
-    autocmd FileType text,latex,markdown call AutoCorrect()
-    autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
-    autocmd FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
-augroup END
+autocmd filetype text,latex,markdown call AutoCorrect()
+autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
+au FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
+
 
 "-[ Spelling ]----------------------------------------------------------------------------
 
@@ -196,17 +195,12 @@ call matchadd('ColorColumn', '\%82v', 100)
 
 
 " Markdown with fenced code blocks
-augroup markdown
-    autocmd!
-    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-augroup END
+au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
 " Set it to the first line when editing a git commit message
-augroup git
-    autocmd!
-    autocmd FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-augroup END
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
 
 "-[ Functionality ]-----------------------------------------------------------------------
 
@@ -339,3 +333,9 @@ if executable('qpdfview')
   let g:vimtex_view_general_options = '--unique @pdf\#src:@tex:@line:@col'
   let g:vimtex_view_general_options_latexmk = '--unique'
 endif
+
+" disable arrow keys
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>

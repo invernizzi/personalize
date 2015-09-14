@@ -1,0 +1,12 @@
+sudo apt-get install -y aptitude terminator gnome-shell gdebi libwww-perl meld
+
+say "Installing Chrome"
+if ! which google-chrome >/dev/null; then
+  wget https://dl.google.com/linux/direct/google-chrome-beta_current_amd64.deb -O /tmp/chrome.deb
+  sudo gdebi -n /tmp/chrome.deb
+fi
+
+say "Installing fonts."
+sudo apt-get install -y fontconfig fontforge
+sudo fc-cache -vf ~/.fonts/
+
