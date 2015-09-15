@@ -10,7 +10,7 @@ else
     let vim_path = '~/.vim/'
 endif
 
-" Autmatically load VimPlug, if not installed.
+" Automatically load VimPlug, if not installed.
 if empty(glob(vim_path . 'autoload/plug.vim'))
     execute '!mkdir -p ' . vim_path . 'autoload'
   redraw  " Avoids the 'press enter' prompt
@@ -52,23 +52,25 @@ let g:plug_timeout=300
 " }
 
 " General Programming {
-  Plug 'tpope/vim-surround'     " Change surrounding elements with one command
-  Plug 'scrooloose/syntastic'   " Syntax
-  Plug 'tpope/vim-fugitive'     " Git
-  Plug 'airblade/vim-gitgutter' " Shows +- git signs on the side, ,hs to stage hunk
-  Plug 'tpope/vim-commentary'   " Comment pressing gc
-  Plug 'godlygeek/tabular'      " Tabularize command
-  Plug 'Chiel92/vim-autoformat' " Formatting code
-  Plug 'jiangmiao/auto-pairs'   " Auto-close brackets
+  Plug 'tpope/vim-surround'              " Change surrounding elements with one command
+  Plug 'scrooloose/syntastic'            " Syntax
+  Plug 'tpope/vim-fugitive'              " Git
+  Plug 'bronson/vim-trailing-whitespace' " :FixWhitespace
+  Plug 'airblade/vim-gitgutter'          " Shows +- git signs on the side, ,hs to stage hunk
+  Plug 'tpope/vim-commentary'            " Comment pressing gc
+  Plug 'godlygeek/tabular'               " Tabularize command
+  Plug 'Chiel92/vim-autoformat'          " Formatting code
+  Plug 'jiangmiao/auto-pairs'            " Auto-close brackets
   Plug 'chrisbra/csv.vim'
+  Plug 'rking/ag.vim'
   if executable('ctags')
-      Plug 'majutsushi/tagbar' " Helpful tag bar on the side
+      Plug 'majutsushi/tagbar'           " Helpful tag bar on the side
   endif
 " }
 
 " Snippets & AutoComplete {
   Plug 'davidhalter/jedi-vim', {'for': 'python'}
-  Plug 'ehamberg/vim-cute-python', {'for': 'python'}
+  Plug 'ehamberg/vim-cute-python', {'for': 'python'}   " conceal python
   Plug 'fisadev/vim-isort', {'for': 'python'}  " sort python imports
   " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 " }
@@ -76,6 +78,7 @@ let g:plug_timeout=300
 " Javascript {
   Plug 'elzr/vim-json', {'for': 'json'}
   Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+  Plug 'tyok/js-mask', {'for': 'javascript'}
 " }
 
 " HTML {
@@ -110,9 +113,24 @@ call plug#end()
 
 "-[ Auto commands ]-----------------------------------------------------------------------
 
-autocmd filetype text,latex,markdown call AutoCorrect()
-autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
-au FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
+
+augroup writing
+  autocmd!
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+  autocmd filetype text,latex,markdown call AutoCorrect()
+  autocmd filetype text,tex,latex,markdown set spell
+augroup END
+
+augroup linting
+  autocmd!
+  autocmd FileType puppet autocmd BufWritePost <buffer>  !puppet-lint <afile>
+  autocmd FileType python,puppet,c,javascript,latex autocmd BufWritePre <buffer> FixWhitespace
+augroup END
+
+augroup formatting
+  autocmd!
+  autocmd FileType python setl expandtab tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
 
 
 "-[ Spelling ]----------------------------------------------------------------------------
@@ -127,7 +145,6 @@ hi SpellBad cterm=underline,bold
 " Set custom spellfile
 set spellfile=~/.vim.spellfile.en.utf-8.add
 
-" autocmd filetype text,tex,latex,markdown set spell
 
 "-[ UI ]----------------------------------------------------------------------------------
 
@@ -190,16 +207,21 @@ set splitright
 set splitbelow
 
 " Highlight the 80th column, if a line crosses it
-highlight ColorColumn cterm=bold
-call matchadd('ColorColumn', '\%82v', 100)
+if (exists ('+colorcolumn'))
+  set colorcolumn=80
+  highlight ColorColumn cterm=bold
+  "cterm=bold
+endif
 
 
 " Markdown with fenced code blocks
-au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
 " Set it to the first line when editing a git commit message
-au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+augroup git
+  autocmd!
+  autocmd FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+augroup END
 
 
 "-[ Functionality ]-----------------------------------------------------------------------
@@ -212,7 +234,7 @@ function! ResCur()
     endif
 endfunction
 
-augroup resCur
+augroup restoreCursor
     autocmd!
     autocmd BufWinEnter * call ResCur()
 augroup END
@@ -244,9 +266,6 @@ set splitright                  " Puts new vsplit windows to the right of the cu
 set splitbelow                  " Puts new split windows to the bottom of the current
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set autoread                    " Set to auto read when a file is changed from the outside
-
-" Remove trailing whitespaces and ^M chars
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:spf13_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
 
 
 "-[ Key bindings ]------------------------------------------------------------------------
@@ -339,3 +358,11 @@ noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
+
+
+" Search word under cursor in files in the same directory
+nmap <leader>* :Ag <c-r>=expand("<cword>")<cr><cr>
+
+" Make concealed chars look normal
+highlight Conceal ctermbg=none ctermfg=white
+set conceallevel=2  " Activate conceal
