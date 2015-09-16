@@ -254,7 +254,8 @@ set undoreload=10000        " Maximum number lines to save for undo on a buffer 
 
 "-[ Formatting ]--------------------------------------------------------------------------
 
-let mapleader = ','
+let mapleader = '\'
+map <space> \
 set wrap                        " Wrap long lines
 set autoindent                  " Indent at the same level of the previous line
 set shiftwidth=2                " Use indents of 4 spaces
