@@ -33,6 +33,7 @@ let g:plug_timeout=300
 
 " General {
   Plug 'wesQ3/vim-windowswap'                             " Easy swap window position
+  Plug 'terryma/vim-expand-region'
   Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'tacahiroy/ctrlp-funky'
@@ -41,7 +42,6 @@ let g:plug_timeout=300
   Plug 'bogado/file-line'                                 " Open at file:92
   Plug 'tpope/vim-dispatch'
   Plug 'junegunn/vim-peekaboo'
-  " Plug 'vim-scripts/LustyJuggler'
 " }
 
 " Writing {
@@ -55,12 +55,15 @@ let g:plug_timeout=300
   Plug 'tpope/vim-surround'              " Change surrounding elements with one command
   Plug 'scrooloose/syntastic'            " Syntax
   Plug 'tpope/vim-fugitive'              " Git
+  Plug 'vim-scripts/gitignore'           " Do not autcomplete
   Plug 'bronson/vim-trailing-whitespace' " :FixWhitespace
   Plug 'airblade/vim-gitgutter'          " Shows +- git signs on the side, ,hs to stage hunk
   Plug 'tpope/vim-commentary'            " Comment pressing gc
   Plug 'godlygeek/tabular'               " Tabularize command
   Plug 'Chiel92/vim-autoformat'          " Formatting code
   Plug 'jiangmiao/auto-pairs'            " Auto-close brackets
+  Plug 'SirVer/ultisnips'                " Ultisnip core
+  Plug 'honza/vim-snippets'                " Ultisnip snippets
   Plug 'chrisbra/csv.vim'
   Plug 'rking/ag.vim'
   if executable('ctags')
@@ -72,7 +75,6 @@ let g:plug_timeout=300
   Plug 'davidhalter/jedi-vim', {'for': 'python'}
   Plug 'ehamberg/vim-cute-python', {'for': 'python'}   " conceal python
   Plug 'fisadev/vim-isort', {'for': 'python'}  " sort python imports
-  " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 " }
 
 " Javascript {
@@ -91,7 +93,7 @@ let g:plug_timeout=300
 " }
 
 " Ruby {
-      Plug 'tpope/vim-rails', {'for': 'ruby'}
+  Plug 'tpope/vim-rails', {'for': 'ruby'}
 " }
 
 " Puppet {
@@ -100,8 +102,8 @@ let g:plug_timeout=300
 " }
 
 " Go Lang {
-      Plug 'Blackrush/vim-gocode'
-      Plug 'fatih/vim-go'
+  " Plug 'Blackrush/vim-gocode'
+  " Plug 'fatih/vim-go'
 " }
 
 
@@ -181,7 +183,6 @@ set statusline+=\ [%{getcwd()}]                    " Current dir
 set statusline+=%=%-14.(%l,%c%V%)\ %p%%            " Right aligned file nav info
 set backspace=indent,eol,start                     " Backspace for dummies
 set linespace=0                                    " No extra spaces between rows
-set number                                         " Line numbers on
 set showmatch                                      " Show matching brackets/parenthesis
 set incsearch                                      " Find as you type search
 set hlsearch                                       " Highlight search terms
@@ -212,6 +213,15 @@ if (exists ('+colorcolumn'))
   highlight ColorColumn cterm=bold
   "cterm=bold
 endif
+
+" Show absolute and relative numbers only in current window
+augroup Numbers
+  autocmd!
+  autocmd WinEnter * setlocal number
+  autocmd WinEnter * setlocal relativenumber
+  autocmd WinLeave * setlocal nonumber
+  autocmd WinLeave * setlocal norelativenumber
+augroup END
 
 
 " Markdown with fenced code blocks
@@ -274,6 +284,17 @@ set autoread                    " Set to auto read when a file is changed from t
 " open file under cursor in a vertical split
 :nnoremap gF :vertical wincmd f<CR>
 
+" open a new file
+nnoremap <Leader>o :CtrlP<cr>
+
+" Copy & paste to system clipboard with <Space>p and <Space>y
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
 " Wrapped lines goes down/up to next row, rather than next line in file.
 vnoremap j gj
 vnoremap k gk
@@ -293,6 +314,10 @@ if has('clipboard')
   endif
 endif
 
+"-[ Ultisnips ]----------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 "-[ Modeline ]----------------------------------------------------------------------------
 function! AppendModeline()
@@ -367,3 +392,23 @@ nmap <leader>* :Ag <c-r>=expand("<cword>")<cr><cr>
 " Make concealed chars look normal
 highlight Conceal ctermbg=none ctermfg=white
 set conceallevel=2  " Activate conceal
+
+" Press v repeatedly to select bigger text objects
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+" CtrlP uses git or silver searcher
+let g:ctrlp_use_caching = 0
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor
+
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+else
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+  let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
+    \ }
+endif
+
+" Quick buffer selection
+nnoremap <leader>b :ls<cr>:b
