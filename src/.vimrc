@@ -45,10 +45,11 @@ let g:plug_timeout=300
 " }
 
 " Writing {
-  Plug 'panozzaj/vim-autocorrect' " Autofix mistypes (e.g., teh => the)
+  Plug 'reedes/vim-litecorrect' " Autofix mistypes (e.g., teh => the)
   Plug 'reedes/vim-wordy'         " Similar to chrisper
   Plug 'tpope/vim-markdown'
   Plug 'lervag/vimtex'            " Latex. Ctrl-X Ctrl-O to autocomplete \cite
+  Plug 'reedes/vim-pencil'        " Writing mode
 " }
 
 " General Programming {
@@ -62,7 +63,8 @@ let g:plug_timeout=300
   Plug 'godlygeek/tabular'               " Tabularize command
   Plug 'Chiel92/vim-autoformat'          " Formatting code
   Plug 'jiangmiao/auto-pairs'            " Auto-close brackets
-  Plug 'SirVer/ultisnips'                " Ultisnip core
+  " Ultisnip core
+  Plug 'SirVer/ultisnips', {'on': []}  " Load at first insert mode
   Plug 'honza/vim-snippets'                " Ultisnip snippets
   Plug 'chrisbra/csv.vim'
   Plug 'rking/ag.vim'
@@ -85,11 +87,11 @@ let g:plug_timeout=300
 
 " HTML {
   Plug 'amirh/HTML-AutoCloseTag'
-  Plug 'hail2u/vim-css3-syntax'
+  Plug 'hail2u/vim-css3-syntax', {'for': 'css'}
   Plug 'gorodinskiy/vim-coloresque'  " Preview colors in HTML
   Plug 'tpope/vim-haml'
-  Plug 'mattn/emmet-vim', {'for': 'html,css'}
-  Plug 'Valloric/MatchTagAlways' " Highlight closing <html> tags
+  Plug 'mattn/emmet-vim', {'for': [ 'html', 'css' ]}
+  Plug 'Valloric/MatchTagAlways', {'for': 'html'} " Highlight closing <html> tags
 " }
 
 " Ruby {
@@ -115,12 +117,28 @@ call plug#end()
 
 "-[ Auto commands ]-----------------------------------------------------------------------
 
+function WritingMode(wrapping)
+  let g:limelight_conceal_ctermfg = 'gray'
+  let g:pencil#conceallevel = 2
+  setl spell
+  call litecorrect#init()
+  if a:wrapping ==? 'soft'
+    call pencil#init({'wrap': 'soft'})
+    :SoftPencil
+  else
+    call pencil#init({'wrap': 'hard', 'textwidth': 72})
+    :HardPencil
+  endif
+endfunction
+
 
 augroup writing
   autocmd!
-  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-  autocmd filetype text,latex,markdown call AutoCorrect()
-  autocmd filetype text,tex,latex,markdown set spell
+
+  autocmd BufNewFile,BufReadPost *.md setl filetype=markdown
+  autocmd filetype text,latex,markdown,mkd,tex call WritingMode('soft')
+  autocmd Filetype git,gitsendemail,*commit*,*COMMIT* call WritingMode('hard')
+
 augroup END
 
 augroup linting
@@ -225,7 +243,7 @@ augroup END
 
 
 " Markdown with fenced code blocks
-let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
 " Set it to the first line when editing a git commit message
 augroup git
