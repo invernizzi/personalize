@@ -46,6 +46,7 @@ setopt AUTO_CD
 COMPLETION_WAITING_DOTS=true
 
 export EDITOR=vim
+export TERM=xterm-256color
 
 # Aliases
 alias l="ls --ignore='*.pyc'"
