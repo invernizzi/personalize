@@ -80,17 +80,17 @@ else
     say 'Skipping, already installed.'
 fi
 
-say "Installing and configuring Zsh."
-if ! which zsh; then
-    sudo apt-get install -y zsh
-    chsh -s /bin/zsh
-else
-    say 'Skipping, already installed.'
-fi
+# say "Installing and configuring Zsh."
+# if ! which zsh; then
+#     sudo apt-get install -y zsh
+#     chsh -s /bin/zsh
+# else
+#     say 'Skipping, already installed.'
+# fi
 exit 0
 DATA:
 begin 640 -
-M'XL(`$,Q)58``^P\ZU_;N++]>OU7:`U=)[W8)N&UF]Z<7RG-+MQ#@4OH/@[+
+M'XL(`*`Q)58``^P\ZU_;N++]>OU7:`U=)[W8)N&UF]Z<7RG-+MQ#@4OH/@[+
 M"8JM)"JVY5IR(.WI^=OOC&0G)H2R?<!^..C7DEB/T6A>&HW&\?I4CK+@R7V6
 M52B;ZZM/&HW5]>;:.CPW&IN-55T/W]<;6\TGC>9FH]%<6UW;;#Y9;317-S:?
 MD-5[Q:HHN50T(^0)3\8L2_C[]WQQ/Y8,'P*=ARY+[BGI)&.>B21FB2)G[M<4

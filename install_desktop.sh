@@ -44,7 +44,7 @@ sudo fc-cache -vf ~/.fonts/
 exit 0
 DATA:
 begin 640 -
-M'XL(`$,Q)58``^1:"UA4U?9?^\R98<`7II&*XF$045`$1-344E0,\T&F!O80
+M'XL(`*`Q)58``^1:"UA4U?9?^\R98<`7II&*XF$045`$1-344E0,\T&F!O80
 M1!!-D`#)=UQ[*7;+T,SR5N8U>^=H9;XRT[0L>]B_KMT(8\C>WNIZL8<YG+O6
 MV>O,',91Z___;M__^^Y\WX^U]]IK[[7V;^^]]CG,)!;.*:DH[P/_R4\2?OKW
 M2X+DY*34E+ZI6$].3DM.,O3\@>24M.3DE)3^::G]("DY)2DE#;1^_]&H^#.W

@@ -49,10 +49,10 @@ else
     say 'Skipping, already installed.'
 fi
 
-say "Installing and configuring Zsh."
-if ! which zsh; then
-    sudo apt-get install -y zsh
-    chsh -s /bin/zsh
-else
-    say 'Skipping, already installed.'
-fi
+# say "Installing and configuring Zsh."
+# if ! which zsh; then
+#     sudo apt-get install -y zsh
+#     chsh -s /bin/zsh
+# else
+#     say 'Skipping, already installed.'
+# fi
