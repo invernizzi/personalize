@@ -1,3 +1,4 @@
+export TERM="xterm-256color"
 ANTIGEN_PATH="${HOME}/.antigen.zsh"
 
 # If antigen is not installed, do it
@@ -59,6 +60,7 @@ if which trash 1>/dev/null; then
   alias rm='trash'
 fi
 
+# Search up and down history with arrows
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
@@ -67,6 +69,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # Vim mode
 bindkey -v
 
+# Pressing CTRL-z again brings back stopped program
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then
     BUFFER="fg"
@@ -78,3 +81,8 @@ fancy-ctrl-z () {
 }
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
+
+
+# Colored ls
+eval "`dircolors -b`"
+alias ls='ls --color=auto'
