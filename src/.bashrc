@@ -123,6 +123,12 @@ POWERLINE_BASH_CONFIG='[
   }
 ]'
 export POWERLINE_THEME_OVERRIDES="default_leftonly.segments.left=${POWERLINE_BASH_CONFIG//[[:space:]]/}"
+
+if [ ! -f ${POWERLINE_ROOT}/bindings/bash/powerline.sh ]; then
+  echo "Powerline missing, installing."
+  pip install --user powerline-status
+fi
+
 . ${POWERLINE_ROOT}/bindings/bash/powerline.sh
 
 powerline_path=$(python -c 'import pkgutil; print pkgutil.get_loader("powerline").filename' 2>/dev/null)
@@ -133,22 +139,22 @@ else
   echo 'No powerline found.'
 fi
 
-# Stderred
-STDERRED_PATH="${HOME}/.local/stderred/build/libstderred.so"
+# # Stderred
+# STDERRED_PATH="${HOME}/.local/stderred/build/libstderred.so"
 
-if [ -f "$STDERRED_PATH" ]; then
-    export LD_PRELOAD="$STDERRED_PATH":$LD_PRELOAD
-fi
+# if [ -f "$STDERRED_PATH" ]; then
+#     export LD_PRELOAD="$STDERRED_PATH":$LD_PRELOAD
+# fi
 
 #------------------------------------------------------------------------------
 
 
 #-[ Misc ]---------------------------------------------------------------------
 
-# Virtualenv
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Projects
-source ~/.local/bin/virtualenvwrapper.sh
+# # Virtualenv
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Projects
+# source ~/.local/bin/virtualenvwrapper.sh
 
 # Configure vertical mouse buttons
 # Warning: it breaks ssh

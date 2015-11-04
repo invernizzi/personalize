@@ -6,7 +6,7 @@ say "Installing Powerline."
 if [ ! -f "${HOME}.local/bin/powerline" ]; then
     sudo apt-get install -y python-pip git python-dev fontconfig
     pip install --user powerline-status
-    pip3 install --user powerline-status
+    # pip3 install --user powerline-status
     . ~/.bashrc
 else
     say 'Skipping, already installed.'
@@ -15,7 +15,7 @@ fi
 say "Installing and configuring IPython."
 if ! which ipython; then
     sudo apt-get install -y ipython ipython3
-    pip install --user virtualenvwrapper
+    # pip install --user virtualenvwrapper
 else
     say 'Skipping, already installed.'
 fi
@@ -49,22 +49,10 @@ else
     say 'Skipping, already installed.'
 fi
 
-say "Installing and configuring Zsh."
-if ! which tmux; then
-    sudo apt-get install -y zsh
-    chsh -s /bin/zsh
-else
-    say 'Skipping, already installed.'
-fi
-
-say 'Colorizing StdErr in red.'
-INSTALL_PATH="${HOME}/.local/stderred"
-if [ ! -d "$INSTALL_PATH" ]; then
-    sudo apt-get install -y build-essential cmake
-    git clone git://github.com/sickill/stderred.git $INSTALL_PATH
-    pushd $INSTALL_PATH
-    make
-    popd
-else
-    say 'Skipping, already installed.'
-fi
+# say "Installing and configuring Zsh."
+# if ! which zsh; then
+#     sudo apt-get install -y zsh
+#     chsh -s /bin/zsh
+# else
+#     say 'Skipping, already installed.'
+# fi
